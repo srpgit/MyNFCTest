@@ -1,1 +1,1 @@
-a project deal with nfc on Android for personal use.
+a project about nfc on Android for personal use.
