@@ -133,6 +133,21 @@ public class NfcVUtil {
         return oneBlockSize + 1;
     }
 
+    /**
+     * 如未连接，先连接。连接失败时抛出异常
+     *
+     * @throws ConnectFailedException
+     */
+    public void assertConnected() throws ConnectFailedException {
+        if (!mNfcV.isConnected()) {
+            try {
+                mNfcV.connect();
+            } catch (IOException e) {
+                throw new ConnectFailedException();
+            }
+        }
+    }
+
     private byte[] initCmd(Commands command) {
         return initCmd(command, 0);
     }
@@ -182,6 +197,7 @@ public class NfcVUtil {
      * 取得标签信息
      */
     private byte[] getInfoRmation() throws IOException {
+        assertConnected();
         byte[] cmd = initCmd(Commands.tag_info);
         infoRmation = mNfcV.transceive(cmd);
         blockNumber = infoRmation[12];
@@ -197,6 +213,7 @@ public class NfcVUtil {
      * @return
      */
     public boolean clearAllBlocks() throws IOException {
+        assertConnected();
         int n = this.getBlockNumber();
         byte[] bytes = new byte[this.getOneBlockSize()];
         //用0清空
@@ -216,6 +233,7 @@ public class NfcVUtil {
      * @throws IOException
      */
     public byte[] readAllBlocks() throws IOException {
+        assertConnected();
         byte cmd[] = initCmd(Commands.default_flag.read_batch, 2);
         cmd[10] = 0x00;
         cmd[11] = (byte) this.getBlockNumber();
@@ -228,12 +246,22 @@ public class NfcVUtil {
         return null;
     }
 
+    /**
+     * 读取所有block信息，返回字符串
+     *
+     * @return
+     * @throws IOException
+     */
+    public String readAll() throws IOException {
+        return new String(this.readAllBlocks(), CHAR_SET);
+    }
 
     //failed。会失败，原因尚未找到
     private boolean write(String s) throws IOException {
         if (s == null || s.length() == 0) {
             return true;
         }
+        assertConnected();
         byte[] bytes = s.getBytes(CHAR_SET);
         int end = (int) Math.ceil((bytes.length + 0.0) / this.getOneBlockSize());
         end = Math.min(end, this.getBlockNumber());
@@ -270,6 +298,7 @@ public class NfcVUtil {
         if (data.length != this.getOneBlockSize()) {
             throw new IllegalArgumentException("data length must be one block size:" + this.getOneBlockSize());
         }
+        assertConnected();
         byte[] cmd = initCmd(Commands.write_block, 1 + data.length);
         cmd[10] = (byte) block;
         System.arraycopy(data, 0, cmd, 11, data.length);
@@ -278,7 +307,8 @@ public class NfcVUtil {
     }
 
     /**
-     * 从第零block开始写入字符串，使用默认编码{@link NfcVUtil#CHAR_SET}
+     * 从第零block开始写入字符串，使用默认编码{@link NfcVUtil#CHAR_SET}。
+     * 若字符串长度大于block总空间，则多余的内容丢失。会先清空所有内容
      *
      * @param s 字符串
      * @return
@@ -289,6 +319,9 @@ public class NfcVUtil {
         if (s == null || s.length() == 0) {
             return true;
         }
+
+        this.clearAllBlocks();
+
         byte[] bytes = s.getBytes(CHAR_SET);
 
         int end = (int) Math.ceil((bytes.length + 0.0) / this.getOneBlockSize());
@@ -300,7 +333,7 @@ public class NfcVUtil {
         //bytes只可能小于等于data长度
         byte[] data = new byte[len];
         //将bytes内容复制到data中，多余的位置为空
-        System.arraycopy(bytes, 0, data, 0, bytes.length);
+        System.arraycopy(bytes, 0, data, 0, Math.min(bytes.length, data.length));
 
         for (int i = 0; i < end; i++) {
             byte[] block = new byte[this.getOneBlockSize()];
@@ -311,13 +344,14 @@ public class NfcVUtil {
     }
 
     /**
-     * 写afi
+     * 写afi。写入以后下次读取就是这个值了
      *
      * @param AFI
      * @return
      * @throws IOException
      */
     public boolean writeAFI(byte AFI) throws IOException {
+        assertConnected();
         byte[] cmd = initCmd(Commands.write_AFI, 1);
         cmd[10] = AFI;
         byte res[] = mNfcV.transceive(cmd);
@@ -325,25 +359,27 @@ public class NfcVUtil {
     }
 
     /**
-     * 锁afi
+     * 锁afi。不清楚锁是什么作用，锁了以后不能改？
      *
      * @return
      * @throws IOException
      */
     public boolean lockAFI() throws IOException {
+        assertConnected();
         byte[] cmd = initCmd(Commands.lock_AFI);
         byte res[] = mNfcV.transceive(cmd);
         return res[0] == 0x00;
     }
 
     /**
-     * 写dsfid
+     * 写dsfid。写入以后下次读取就是这个值了
      *
      * @param DSFID
      * @return
      * @throws IOException
      */
-    public boolean lockDSFID(byte DSFID) throws IOException {
+    public boolean writeDSFID(byte DSFID) throws IOException {
+        assertConnected();
         byte[] cmd = initCmd(Commands.write_DSFID, 1);
         cmd[10] = DSFID;
         byte res[] = mNfcV.transceive(cmd);
@@ -351,12 +387,13 @@ public class NfcVUtil {
     }
 
     /**
-     * 锁dsfid
+     * 锁dsfid。不清楚锁是什么作用，锁了以后不能改？
      *
      * @return
      * @throws IOException
      */
     public boolean lockDSFID() throws IOException {
+        assertConnected();
         byte[] cmd = initCmd(Commands.lock_DSFID);
         byte res[] = mNfcV.transceive(cmd);
         return res[0] == 0x00;

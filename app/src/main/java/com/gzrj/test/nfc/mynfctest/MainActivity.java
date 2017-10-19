@@ -8,12 +8,11 @@ import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.webkit.ConsoleMessage;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.alibaba.fastjson.JSON;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,18 +29,17 @@ public class MainActivity extends AppCompatActivity {
     // pendingIntent
     private PendingIntent pendingIntent;
 
-    // webView使用本地html页面来显示信息
-    private WebView webView;
-
-    private TP tp;
-
-    private static final String page_path = "file:///android_asset/nfc_info.html";
+    private NfcVUtil nfcVUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initWebView();
+        initComponents();
+    }
+
+    private <T> T getView(int id, Class<T> clazz) {
+        return (T) findViewById(id);
     }
 
     /**
@@ -110,30 +108,52 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 初始化webview
      */
-    private void initWebView() {
-        webView = (WebView) this.findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebChromeClient(new WebChromeClient() {
+    private void initComponents() {
+
+        getView(R.id.write_to_block_btn, Button.class).setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                debug(consoleMessage.message());
-                return super.onConsoleMessage(consoleMessage);
+            public void onClick(View v) {
+                if (nfcVUtil == null) {
+                    tip("请先接触NFC卡片，且不要移动");
+                    return;
+                }
+                CharSequence text = getView(R.id.write_to_block_value, EditText.class).getText();
+                try {
+                    tip("写入中...");
+                    nfcVUtil.writeString(String.valueOf(text));
+                    tip("写入成功");
+                } catch (IOException e) {
+                    if (e instanceof ConnectFailedException) {
+                        tip("请先接触NFC卡片，且不要移动");
+                    } else {
+                        e.printStackTrace();
+                        tip("写入失败");
+                    }
+                }
             }
         });
-        tp = new TP(null);
-        webView.addJavascriptInterface(tp, "tp");
-        webView.loadUrl(page_path);
+
+        getView(R.id.read_block_btn, Button.class).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (nfcVUtil == null) {
+                    tip("没有读取到卡片信息");
+                    return;
+                }
+                TextView textView = getView(R.id.read_block_value, TextView.class);
+                textView.setText("");
+                try {
+                    tip("读取中...");
+                    textView.setText(nfcVUtil.readAll());
+                    tip("读取成功");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    tip("读取失败");
+                }
+            }
+        });
     }
 
-    /**
-     * 向js页面传递数据，并刷新页面。在页面调用tp.getData()可获取出传递的数据
-     *
-     * @param data
-     */
-    private void tp(String data) {
-        tp.setData(data);
-        webView.reload();
-    }
 
     /**
      * 当前程序不在前台运行时，触发nfc事件，则直接读取信息。
@@ -223,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
             nfcV.connect();
             this.tip("读取成功...");
 
-            NfcVUtil nfcVUtil = new NfcVUtil(nfcV);
+            nfcVUtil = new NfcVUtil(nfcV);
 
             this.showNfcInfo(nfcVUtil);
 
@@ -244,36 +264,26 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * 显示标签信息
+     *
+     * @param nfcVUtil
+     */
     private void showNfcInfo(NfcVUtil nfcVUtil) {
         tip("读取数据中...");
         Map<String, Object> data = new HashMap<>();
-        data.put("UID", nfcVUtil.getUID());
-        data.put("AFI", nfcVUtil.getAFI());
-        data.put("DSFID", nfcVUtil.getDSFID());
-        data.put("BlockNumber", nfcVUtil.getBlockNumber());
-        data.put("OneBlockSize", nfcVUtil.getOneBlockSize());
 
         try {
-            String allData = new String(nfcVUtil.readAllBlocks(), NfcVUtil.CHAR_SET);
-            data.put("allData", allData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        tp(JSON.toJSONString(data));
-
-        try {
-            nfcVUtil.clearAllBlocks();
-            boolean success = nfcVUtil.writeString("hello world,世界，你好！");
-            if (success) {
-                tip("写入成功");
-            } else {
-                tip("写入失败");
-            }
+            getView(R.id.uid_value, TextView.class).setText(nfcVUtil.getUID());
+            getView(R.id.afi_value, TextView.class).setText(nfcVUtil.getAFI());
+            getView(R.id.dsfid_value, TextView.class).setText(nfcVUtil.getDSFID());
+            getView(R.id.block_num_value, TextView.class).setText(String.valueOf(nfcVUtil.getBlockNumber()));
+            getView(R.id.block_size_value, TextView.class).setText(String.valueOf(nfcVUtil.getOneBlockSize()));
+            getView(R.id.uid_value, TextView.class).setText(nfcVUtil.getUID());
+            getView(R.id.read_block_value, TextView.class).setText(nfcVUtil.readAll());
         } catch (Exception e) {
-            Log.e(MainActivity.class.getName(), e.getMessage(), e);
-            tip("写入失败");
+            e.printStackTrace();
+            tip("读取失败");
         }
-
     }
 }

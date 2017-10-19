@@ -1,18 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gzrj.test.nfc.mynfctest.MainActivity">
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:padding="20dp">
 
-    <WebView
-        android:id="@+id/webView"
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:stretchColumns="1">
 
-</RelativeLayout>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/uid_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:text="UID"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/uid_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:textAlignment="viewStart" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/block_num_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:text="block数量"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/block_num_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:textAlignment="viewStart" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/block_size_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:text="block大小"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/block_size_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:textAlignment="viewStart" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/afi_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:text="AFI"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/afi_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:textAlignment="viewStart" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/dsfid_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:text="DSFID"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/dsfid_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:textAlignment="viewStart" />
+        </TableRow>
+    </TableLayout>
+
+    <EditText
+        android:id="@+id/write_to_block_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:hint="这里的内容写到BLOCK里面"
+        android:inputType="text|textMultiLine"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/holo_blue_light" />
+
+    <Button
+        android:id="@+id/write_to_block_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:text="写内容到block"
+        android:textColor="@color/common_google_signin_btn_text_dark_default" />
+
+    <Button
+        android:id="@+id/read_block_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/colorAccent"
+        android:text="读取block所有内容"
+        android:textColor="@color/common_google_signin_btn_text_dark_default" />
+
+    <TextView
+        android:id="@+id/read_block_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.31" />
+
+</LinearLayout>
