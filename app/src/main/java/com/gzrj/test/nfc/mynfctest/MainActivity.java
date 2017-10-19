@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 CharSequence text = getView(R.id.write_to_block_value, EditText.class).getText();
                 try {
-                    tip("写入中...");
                     nfcVUtil.writeString(String.valueOf(text));
                     tip("写入成功");
                 } catch (IOException e) {
@@ -143,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                 TextView textView = getView(R.id.read_block_value, TextView.class);
                 textView.setText("");
                 try {
-                    tip("读取中...");
                     textView.setText(nfcVUtil.readAll());
                     tip("读取成功");
                 } catch (IOException e) {
@@ -241,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             nfcV.connect();
-            this.tip("读取成功...");
 
             nfcVUtil = new NfcVUtil(nfcV);
 
@@ -270,9 +267,7 @@ public class MainActivity extends AppCompatActivity {
      * @param nfcVUtil
      */
     private void showNfcInfo(NfcVUtil nfcVUtil) {
-        tip("读取数据中...");
         Map<String, Object> data = new HashMap<>();
-
         try {
             getView(R.id.uid_value, TextView.class).setText(nfcVUtil.getUID());
             getView(R.id.afi_value, TextView.class).setText(nfcVUtil.getAFI());
@@ -281,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
             getView(R.id.block_size_value, TextView.class).setText(String.valueOf(nfcVUtil.getOneBlockSize()));
             getView(R.id.uid_value, TextView.class).setText(nfcVUtil.getUID());
             getView(R.id.read_block_value, TextView.class).setText(nfcVUtil.readAll());
+            tip("读取数据成功");
         } catch (Exception e) {
             e.printStackTrace();
             tip("读取失败");

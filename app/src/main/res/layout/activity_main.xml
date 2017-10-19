@@ -4,163 +4,180 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1"
-    tools:padding="20dp">
+    android:overScrollMode="always"
+    android:weightSum="1">
 
-    <TableLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:stretchColumns="1">
+        android:layout_height="match_parent">
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_dark"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/uid_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:text="UID"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/uid_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:textAlignment="viewStart" />
-        </TableRow>
-
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_dark"
-            android:padding="5dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.31"
+                android:stretchColumns="1">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_blue_dark"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/uid_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:text="UID"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/uid_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_blue_dark"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/block_num_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:text="block数量"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/block_num_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_blue_dark"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/block_size_lable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:text="block大小"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/block_size_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_blue_dark"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/afi_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:text="AFI"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/afi_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/holo_blue_dark"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/dsfid_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:text="DSFID"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/dsfid_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/common_google_signin_btn_text_dark_default"
+                        android:textAlignment="center" />
+                </TableRow>
+            </TableLayout>
+
+            <EditText
+                android:id="@+id/write_to_block_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_weight="0.31"
+                android:ems="10"
+                android:hint="这里的内容写到BLOCK里面"
+                android:inputType="text|textMultiLine"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/holo_blue_light" />
+
+            <Button
+                android:id="@+id/write_to_block_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.31"
+                android:background="#FF4081"
+                android:text="写内容到block"
+                android:textColor="@color/common_google_signin_btn_text_dark_default" />
+
+            <Button
+                android:id="@+id/read_block_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.31"
+                android:background="#009688"
+                android:text="读取block所有内容"
+                android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
             <TextView
-                android:id="@+id/block_num_label"
-                android:layout_width="wrap_content"
+                android:id="@+id/read_block_value"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:text="block数量"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/block_num_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:textAlignment="viewStart" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_dark"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/block_size_lable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:text="block大小"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/block_size_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:textAlignment="viewStart" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_dark"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/afi_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:text="AFI"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/afi_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:textAlignment="viewStart" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_dark"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/dsfid_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:text="DSFID"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/dsfid_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                android:textAlignment="viewStart" />
-        </TableRow>
-    </TableLayout>
-
-    <EditText
-        android:id="@+id/write_to_block_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:ems="10"
-        android:hint="这里的内容写到BLOCK里面"
-        android:inputType="text|textMultiLine"
-        android:textAlignment="viewStart"
-        android:textColor="@android:color/holo_blue_light" />
-
-    <Button
-        android:id="@+id/write_to_block_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:text="写内容到block"
-        android:textColor="@color/common_google_signin_btn_text_dark_default" />
-
-    <Button
-        android:id="@+id/read_block_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="?android:attr/colorAccent"
-        android:text="读取block所有内容"
-        android:textColor="@color/common_google_signin_btn_text_dark_default" />
-
-    <TextView
-        android:id="@+id/read_block_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.31" />
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.31" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

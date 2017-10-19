@@ -184,7 +184,7 @@ public class NfcVUtil {
     private String printHexString(byte[] data) {
         StringBuffer s = new StringBuffer();
         for (int i = 0; i < data.length; i++) {
-            String hex = Integer.toHexString(data[i] & 0xFF);
+            String hex = Integer.toHexString(data[i] & 0xFF).toUpperCase();
             if (hex.length() == 1) {
                 hex = '0' + hex;
             }
